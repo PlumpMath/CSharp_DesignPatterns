@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace DesignStrategies_JonSkeet
 {
@@ -151,6 +152,35 @@ namespace DesignStrategies_JonSkeet
         }
 
         public static ThreadSafeSingletonShortLazy Instance { get { return SingletonHolder.instance; } }
+
+        public static void SayHi()
+        {
+            Console.WriteLine("Say Hi");
+        }
+
+        public void DoSomething()
+        {
+            //this must be thread safe!
+        }
+
+    }
+
+    //Using DOTNET4 Code
+    //Thread Safe
+    //Fully Lazy
+    public class DOTNETSingleton
+    {
+        private static readonly Lazy<DOTNETSingleton> instance =
+                new Lazy<DOTNETSingleton>(() => new DOTNETSingleton(), 
+                    LazyThreadSafetyMode.PublicationOnly);
+
+        private DOTNETSingleton()
+        {
+            //Stuff that must only happen once.
+            Console.WriteLine("ThreadSafeSingletonShort constructor");
+        }
+
+        public static DOTNETSingleton Instance { get { return instance.Value; } }
 
         public static void SayHi()
         {
